@@ -7,11 +7,6 @@ class SoapServer
     private $serverUrl;
     private $services = [];
 
-    public static function make($url)
-    {
-        return new self($url);
-    }
-
     public function __construct($url)
     {
         $this->disableSoapCache();
