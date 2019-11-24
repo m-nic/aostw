@@ -2,41 +2,43 @@
 
 require_once __DIR__ . '/vendor/autoload.php';
 
-$debug = false;
-if ($debug) {
+$wsdl = web_base_path('server.php') . '?wsdl';
+$soapClient = new \App\Http\Client($wsdl);
 
-    /** @var \App\Services\CrudService $client */
-    $client = makeProxyClass(
-        new App\Services\CrudService(new App\Database\SqlLite(app_config()))
-    );
+//var_dump(convertSoapArrayCollection($client->browseUsers()));
 
-} else {
-    $wsdl = web_base_path('server.php') . '?wsdl';
-    $client = new \App\Http\Client($wsdl);
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (isset($_POST['reset'])) {
+        $soapClient->resetDb();
+    }
+
+    if (isset($_POST['delete_id'])) {
+        $soapClient->deleteUser(['id' => $_POST['delete_id']]);
+    }
+
+    if (isset($_POST['edit_id'])) {
+        $soapClient->editUser([
+            'id'      => $_POST['edit_id'],
+            'newData' => [
+                'first_name' => $_POST['first_name'],
+                'last_name'  => $_POST['last_name'],
+                'email'      => $_POST['email'],
+                'phone'      => $_POST['phone'],
+            ]
+        ]);
+    }
+
+    if (isset($_POST['add'])) {
+        $soapClient->addUser([
+            'newData' => [
+                'first_name' => $_POST['first_name'],
+                'last_name'  => $_POST['last_name'],
+                'email'      => $_POST['email'],
+                'phone'      => $_POST['phone'],
+            ]
+        ]);
+    }
 }
 
 
-//var_dump($client->resetDb());
-//var_dump(convertSoapArray($client->readUser(['id' => 1])));
-var_dump(convertSoapArrayCollection($client->browseUsers()));
-exit;
-$client->editUser(['id' => 1, 'newData' => [
-    'email' => 'super@qexample.com' . rand(1, 100)
-]]);
-
-var_dump($client->readUser(['id' => 1]));
-
-
-var_dump($client->readUser(['id' => 1]));
-var_dump($client->addUser([
-    'newData' => [
-        'first_name' => rand(100, 1000) . 'First',
-        'last_name'  => rand(100, 1000) . 'Last',
-        'email'      => rand(100, 1000) . '_test@example.com',
-        'phone'      => '+40721 000 0' . rand(100, 1000),
-    ]
-]));
-
-var_dump($client->browseUsers());
-//var_dump($client->deleteUser(['id' => 11]));
-//var_dump($client->browseUsers());
+include './ui/index.php';

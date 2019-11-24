@@ -77,7 +77,7 @@ function makeProxyClass($instance)
 
 function convertSoapArray($array = [])
 {
-    $array = (array) ($array ?? []);
+    $array = (array)($array ?? []);
     $firstEl = $array[0] ?? null;
 
     if (!empty($firstEl)) {
@@ -97,8 +97,15 @@ function convertSoapArray($array = [])
     return $array;
 }
 
-function convertSoapArrayCollection($array) {
+function convertSoapArrayCollection($array)
+{
     return array_map(function ($row) {
         return convertSoapArray($row->item);
     }, $array);
+}
+
+
+function print_json($data)
+{
+    echo json_encode($data);
 }
