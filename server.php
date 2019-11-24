@@ -4,7 +4,12 @@ require_once __DIR__ . '/vendor/autoload.php';
 
 $server = new App\Http\SoapServer(web_base_path('server.php'));
 
-$server->registerService(App\Services\HelloService::class);
+$server->registerService([
+    'class'  => App\Services\CrudService::class,
+    'params' => [
+        new App\Database\SqlLite(app_config())
+    ]
+]);
 
 if (isset($_GET['wsdl'])) {
     header("Content-Type: text/xml");

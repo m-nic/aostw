@@ -1,0 +1,10 @@
+{
+  "site": {
+    "protocol": "http",
+    "host": "example.com"
+  },
+  "database": {
+    "driver": "sqlite",
+    "db_name": "soap_demo"
+  }
+}

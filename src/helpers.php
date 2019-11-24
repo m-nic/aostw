@@ -41,3 +41,64 @@ function web_base_path($path)
 
     return get_url() . $full_path;
 }
+
+function get_db_query($file_name)
+{
+    $currentDir = getcwd();
+
+    $filename = "{$currentDir}/src/queries/{$file_name}.sql";
+
+    if (file_exists($filename)) {
+        return file_get_contents($filename);
+    }
+}
+
+function makeProxyClass($instance)
+{
+    return new class($instance)
+    {
+        public function __construct($client)
+        {
+            $this->client = $client;
+        }
+
+        public function __call($name, $arrayOfArgs)
+        {
+            $args = [];
+
+            foreach ($arrayOfArgs as $arg) {
+                $args = array_merge($args, array_values($arg));
+            }
+
+            return $this->client->{$name}(...$args);
+        }
+    };
+}
+
+function convertSoapArray($array = [])
+{
+    $array = (array) ($array ?? []);
+    $firstEl = $array[0] ?? null;
+
+    if (!empty($firstEl)) {
+        if (
+            isset($firstEl->key) &&
+            isset($firstEl->value)
+        ) {
+            $out = [];
+            foreach ($array as $line) {
+                $out[$line->key] = $line->value;
+            }
+
+            return $out;
+        }
+    }
+
+    return $array;
+}
+
+function convertSoapArrayCollection($array) {
+    return array_map(function ($row) {
+        return convertSoapArray($row->item);
+    }, $array);
+}

@@ -2,7 +2,8 @@
   "require": {
     "zendframework/zend-soap": "^2.8",
     "ext-soap": "*",
-    "ext-json": "*"
+    "ext-json": "*",
+    "ext-pdo": "*"
   },
   "autoload": {
     "psr-4": {

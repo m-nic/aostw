@@ -5,7 +5,7 @@ namespace App\Http;
 class SoapServer
 {
     private $serverUrl;
-    private $services = [];
+    private $service;
 
     public function __construct($url)
     {
@@ -15,8 +15,7 @@ class SoapServer
 
     public function registerService($service)
     {
-        $this->services[] = $service;
-        return $this;
+        $this->service = $service;
     }
 
     public function get_wsdl()
@@ -25,7 +24,7 @@ class SoapServer
         $soapAutoDiscover->setBindingStyle(['style' => 'document']);
         $soapAutoDiscover->setOperationBodyStyle(['use' => 'literal']);
 
-        $soapAutoDiscover->setClass($this->services[0]);
+        $soapAutoDiscover->setClass($this->service['class']);
 
         $soapAutoDiscover->setUri($this->serverUrl);
 
@@ -34,8 +33,8 @@ class SoapServer
 
     public function handle_call()
     {
-        $className = $this->services[0];
-        $serviceInstance = new $className;
+        $params = $this->service['params'] ?? [];
+        $serviceInstance = new $this->service['class'](...$params);
 
         $soap = new \Zend\Soap\Server($this->serverUrl . '?wsdl');
         $soap->setObject(new \Zend\Soap\Server\DocumentLiteralWrapper($serviceInstance));
