@@ -1,6 +1,15 @@
 {
   "require": {
     "zendframework/zend-soap": "^2.8",
-    "ext-soap": "*"
+    "ext-soap": "*",
+    "ext-json": "*"
+  },
+  "autoload": {
+    "psr-4": {
+      "App\\": "src/"
+    },
+    "files": [
+      "src/helpers.php"
+    ]
   }
 }
