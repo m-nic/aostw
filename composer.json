@@ -1,11 +1,11 @@
 {
   "require": {
     "zendframework/zend-soap": "^2.8",
-    "ext-soap": "*",
-    "ext-json": "*",
-    "ext-pdo": "*",
-    "ext-pdo_sqlite": "*",
-    "ext-dom": "*",
+    "ext-soap": "^7.1",
+    "ext-json": "^1.5",
+    "ext-pdo": "^7.1",
+    "ext-pdo_sqlite": "^7.1",
+    "ext-dom": "20031129",
     "php": "7.1.31"
   },
   "autoload": {
