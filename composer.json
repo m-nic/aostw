@@ -4,7 +4,8 @@
     "ext-soap": "*",
     "ext-json": "*",
     "ext-pdo": "*",
-    "ext-dom": "*"
+    "ext-dom": "*",
+    "php": "7.1.31"
   },
   "autoload": {
     "psr-4": {
