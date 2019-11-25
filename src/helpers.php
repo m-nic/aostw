@@ -109,3 +109,14 @@ function print_json($data)
 {
     echo json_encode($data);
 }
+
+function prettify_XML($xml) {
+    $dom = new DOMDocument();
+
+    $dom->preserveWhiteSpace = false;
+    $dom->formatOutput = true;
+
+    $dom->loadXML($xml);
+    $out = $dom->saveXML();
+    return $out;
+}

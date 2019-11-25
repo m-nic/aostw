@@ -5,7 +5,11 @@ require_once __DIR__ . '/vendor/autoload.php';
 $wsdl = web_base_path('server.php') . '?wsdl';
 $soapClient = new \App\Http\Client($wsdl);
 
-//var_dump(convertSoapArrayCollection($client->browseUsers()));
+$requestsStack = [];
+
+$soapClient->afterCall(function ($httpRequestData) use (&$requestsStack) {
+    $requestsStack[] = $httpRequestData;
+});
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['reset'])) {

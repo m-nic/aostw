@@ -5,6 +5,7 @@ namespace App\Http;
 class Client
 {
     private $client;
+    private $afterCallFn;
 
     public function __construct($wsdl)
     {
@@ -21,18 +22,30 @@ class Client
         $result = $this->client->call($name, $arguments);
         $resultKey = "{$name}Result";
 
+        if (is_callable($this->afterCallFn)) {
+            ($this->afterCallFn)($this->getHttpRequestData(), $name, $arguments);
+        }
+
         return $result->{$resultKey};
     }
-    //
-    //public function getLastResponse()
-    //{
-    //    return [
-    //        'method'   => $this->client->getLastMethod(),
-    //        'request'  => $this->client->getLastRequest(),
-    //        'response' => $this->client->getLastResponse(),
-    //        'rh'       => $this->client->getLastRequestHeaders(),
-    //        'respH'    => $this->client->getLastResponseHeaders(),
-    //        'qwq'      => $this->client->getLastSoapOutputHeaderObjects(),
-    //    ];
-    //}
+
+    function afterCall(callable $fn)
+    {
+        $this->afterCallFn = $fn;
+    }
+
+    public function getHttpRequestData()
+    {
+        return [
+            'method'   => $this->client->getLastMethod(),
+            'request'  => [
+                'headers' => $this->client->getLastRequestHeaders(),
+                'body'    => prettify_XML($this->client->getLastRequest()),
+            ],
+            'response' => [
+                'headers' => $this->client->getLastRequestHeaders(),
+                'body'    => prettify_XML($this->client->getLastResponse()),
+            ],
+        ];
+    }
 }

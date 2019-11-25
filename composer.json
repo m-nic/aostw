@@ -3,7 +3,8 @@
     "zendframework/zend-soap": "^2.8",
     "ext-soap": "*",
     "ext-json": "*",
-    "ext-pdo": "*"
+    "ext-pdo": "*",
+    "ext-dom": "*"
   },
   "autoload": {
     "psr-4": {
