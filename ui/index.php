@@ -8,6 +8,12 @@
     <title>Soap Client Demp</title>
     <link href="<?php echo web_base_path('ui/assets/bootstrap.min.css'); ?>" rel="stylesheet">
     <script src="<?php echo web_base_path('ui/assets/vue.js'); ?>"></script>
+    <style>
+        pre {
+            max-height: 180px;
+        }
+
+    </style>
 </head>
 <body>
 
@@ -21,7 +27,8 @@
                         <div class="table-responsive">
                             <form action="client.php" method="post">
                                 <div class="form-group text-right">
-                                    <button class="btn btn-sm btn-danger" type="submit" @click="confirm($event, 'reset')"
+                                    <button class="btn btn-sm btn-danger" type="submit"
+                                            @click="confirm($event, 'reset')"
                                             name="reset" value="1">
                                         Reset
                                     </button>
@@ -48,7 +55,8 @@
                                         </td>
                                         <td class="text-right">
                                             <div v-if="editRow === row.id">
-                                                <button class="btn btn-xs btn-default" type="button" @click="cancelEdit()">
+                                                <button class="btn btn-xs btn-default" type="button"
+                                                        @click="cancelEdit()">
                                                     Anulare
                                                 </button>
                                                 <button class="btn btn-xs btn-success" type="submit"
@@ -58,7 +66,8 @@
                                                 </button>
                                             </div>
                                             <div v-else>
-                                                <button class="btn btn-xs btn-warning" type="button" @click="makeEditable(row)">
+                                                <button class="btn btn-xs btn-warning" type="button"
+                                                        @click="makeEditable(row)">
                                                     Edit
                                                 </button>
                                                 <button class="btn btn-xs btn-danger" type="submit"
@@ -72,40 +81,42 @@
                                     </tbody>
                                 </table>
                             </form>
+                        </div>
 
-                            <form action="client.php" method="post" class="form-inline">
-                                <div class="form-group">
-                                    <label for="first_name">Nume</label>
-                                    <input type="text" class="form-control" name="first_name" id="first_name">
-                                </div>
-                                <div class="form-group">
-                                    <label for="last_name">Prenume</label>
-                                    <input type="text" class="form-control" name="last_name" id="last_name">
-                                </div>
-                                <div class="form-group">
-                                    <label for="email">Email</label>
-                                    <input type="text" class="form-control" name="email" id="email">
-                                </div>
-                                <div class="form-group">
-                                    <label for="phone">Telefon</label>
-                                    <input type="text" class="form-control" name="phone" id="phone">
-                                </div>
-                                <div class="form-group text-center">
-                                    <button class="btn btn-sm btn-success" type="submit" @click="confirm($event, 'add')"
-                                            name="add" value="1">
-                                        Adaugare
-                                    </button>
-                                </div>
-                            </form>
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-4 col-sm-offset-4 well well-lg">
+                                <form action="client.php" method="post" class="form-horizontal">
+                                    <div class="form-group">
+                                        <label for="first_name">Nume</label>
+                                        <input type="text" class="form-control" name="first_name" id="first_name">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="last_name">Prenume</label>
+                                        <input type="text" class="form-control" name="last_name" id="last_name">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="email">Email</label>
+                                        <input type="text" class="form-control" name="email" id="email">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="phone">Telefon</label>
+                                        <input type="text" class="form-control" name="phone" id="phone">
+                                    </div>
+                                    <div class="form-group text-center">
+                                        <button class="btn btn-sm btn-success" type="submit" name="add" value="1">
+                                            Adaugare
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="col-xs-12 col-sm-4" style="height: 100vh; overflow-y: auto">
-                <div class="panel panel-success" v-for="req of requestsStack">
+            <div class="col-xs-12 col-sm-4 requests-block">
+                <div class="panel panel-primary" v-for="req of requestsStack">
                     <div class="panel-heading">{{ req.method }}</div>
                     <div class="panel-body">
-
 
                         <div class="panel panel-info">
                             <div class="panel-heading">Request</div>
@@ -117,7 +128,7 @@
                             </div>
                         </div>
 
-                        <div class="panel panel-primary">
+                        <div class="panel panel-success">
                             <div class="panel-heading">Response</div>
                             <div class="panel-body">
                                 <pre>{{ req.response.headers }}</pre>
