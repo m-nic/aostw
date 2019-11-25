@@ -1,5 +1,7 @@
 <?php
 
+define("PROTOCOL", isset($_SERVER['HTTP_X_FORWARDED_PROTO']) ? $_SERVER['HTTP_X_FORWARDED_PROTO'] : ((isset( $_SERVER["HTTPS"] ) && strtolower( $_SERVER["HTTPS"] ) == "on" ) ? 'https' : 'http'));
+
 function dd(...$args)
 {
     foreach ($args as $arg) {
@@ -19,8 +21,7 @@ function app_config()
 
 function get_url()
 {
-    $protocol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http";
-    return trim("{$protocol}://{$_SERVER['HTTP_HOST']}", ' /');
+    return trim(PROTOCOL . "://{$_SERVER['HTTP_HOST']}", ' /');
 }
 
 function get_uri()
@@ -110,7 +111,8 @@ function print_json($data)
     echo json_encode($data);
 }
 
-function prettify_XML($xml) {
+function prettify_XML($xml)
+{
     $dom = new DOMDocument();
 
     $dom->preserveWhiteSpace = false;
