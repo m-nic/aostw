@@ -5,7 +5,4 @@
 //exec('php-cli /opt/cpanel/composer/bin/composer install', $out);
 //var_dump($out);
 
-
-var_dump($_SERVER['HTTPS']);
-
 echo "Test";
