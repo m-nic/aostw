@@ -5,7 +5,7 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Soap Client Demp</title>
+    <title><?php echo $title; ?></title>
     <link href="<?php echo web_base_path('ui/assets/bootstrap.min.css'); ?>" rel="stylesheet">
     <script src="<?php echo web_base_path('ui/assets/vue.js'); ?>"></script>
     <style>
@@ -24,16 +24,16 @@
                 <div class="panel panel-default">
                     <div class="panel-heading"></div>
                     <div class="panel-body">
-                        <div class="table-responsive">
-                            <form action="client.php" method="post">
-                                <div class="form-group text-right">
-                                    <button class="btn btn-sm btn-danger" type="submit"
-                                            @click="confirm($event, 'reset')"
-                                            name="reset" value="1">
-                                        Reset
-                                    </button>
-                                </div>
+                        <form action="<?php echo $_SERVER['SCRIPT_NAME']; ?>" method="post">
+                            <div class="form-group text-right">
+                                <button class="btn btn-sm btn-danger" type="submit"
+                                        @click="confirm($event, 'reset')"
+                                        name="reset" value="1">
+                                    Reset
+                                </button>
+                            </div>
 
+                            <div class="table-responsive">
                                 <table class="table table-hover table-condensed table-striped">
                                     <thead>
                                     <th></th>
@@ -80,12 +80,13 @@
                                     </tr>
                                     </tbody>
                                 </table>
-                            </form>
-                        </div>
+                            </div>
+                        </form>
 
                         <div class="row">
                             <div class="col-xs-12 col-sm-4 col-sm-offset-4 well well-lg">
-                                <form action="client.php" method="post" class="form-horizontal">
+                                <form action="<?php echo $_SERVER['SCRIPT_NAME']; ?>" method="post"
+                                      class="form-horizontal">
                                     <div class="form-group">
                                         <label for="first_name">Nume</label>
                                         <input type="text" class="form-control" name="first_name" id="first_name">
@@ -114,6 +115,19 @@
                 </div>
             </div>
             <div class="col-xs-12 col-sm-4 requests-block">
+                <div class="panel">
+                    <div class="panel-body text-right">
+                        <a href="/client-soap.php"
+                           class="btn <?php echo $_SERVER['SCRIPT_NAME'] === '/client-soap.php' ? 'btn-primary' : 'btn-default'; ?>">
+                            SOAP
+                        </a>
+                        <a href="/client-rest.php"
+                           class="btn <?php echo $_SERVER['SCRIPT_NAME'] === '/client-rest.php' ? 'btn-primary' : 'btn-default'; ?>">
+                            REST
+                        </a>
+                    </div>
+                </div>
+
                 <div class="panel panel-primary" v-for="req of requestsStack">
                     <div class="panel-heading">{{ req.method }}</div>
                     <div class="panel-body">
@@ -147,7 +161,7 @@
 
 <script>
     (function () {
-        var userData = <?php print_json(convertSoapArrayCollection($soapClient->browseUsers())); ?>;
+        var userData = <?php print_json($userData); ?>;
         var requestsStack = <?php print_json($requestsStack); ?>;
 
         new Vue({

@@ -2,8 +2,8 @@
 
 require_once __DIR__ . '/vendor/autoload.php';
 
-$wsdl = web_base_path('server.php') . '?wsdl';
-$soapClient = new \App\Http\Client($wsdl);
+$wsdl = web_base_path('server-soap.php') . '?wsdl';
+$soapClient = new \App\Http\Soap\SoapClient($wsdl);
 
 $requestsStack = [];
 
@@ -44,5 +44,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
+$userData = convertSoapArrayCollection($soapClient->browseUsers());
+$title = 'Soap Client Demo';
 
 include './ui/index.php';

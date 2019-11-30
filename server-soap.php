@@ -2,7 +2,7 @@
 
 require_once __DIR__ . '/vendor/autoload.php';
 
-$server = new App\Http\SoapServer(web_base_path('server.php'));
+$server = new App\Http\Soap\SoapServer(web_base_path('server-soap.php'));
 
 $server->registerService([
     'class'  => App\Services\CrudService::class,

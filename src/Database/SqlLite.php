@@ -2,9 +2,6 @@
 
 namespace App\Database;
 
-
-use mysql_xdevapi\Exception;
-
 class SqlLite
 {
     /**
@@ -15,8 +12,8 @@ class SqlLite
 
     public function __construct($config)
     {
-        if ($this->pdo == null) {
-            $dbPath = ".db/{$config['database']['db_name']}.sqlite";
+        if ($this->pdo === null) {
+            $dbPath = ".db/{$config['database']['db_name']}.db";
             $this->pdo = new \PDO("sqlite:$dbPath");
         }
     }

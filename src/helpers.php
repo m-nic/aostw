@@ -1,6 +1,6 @@
 <?php
 
-define("PROTOCOL", isset($_SERVER['HTTP_X_FORWARDED_PROTO']) ? $_SERVER['HTTP_X_FORWARDED_PROTO'] : ((isset( $_SERVER["HTTPS"] ) && strtolower( $_SERVER["HTTPS"] ) == "on" ) ? 'https' : 'http'));
+define("PROTOCOL", isset($_SERVER['HTTP_X_FORWARDED_PROTO']) ? $_SERVER['HTTP_X_FORWARDED_PROTO'] : ((isset($_SERVER["HTTPS"]) && strtolower($_SERVER["HTTPS"]) == "on") ? 'https' : 'http'));
 
 function dd(...$args)
 {
@@ -34,13 +34,7 @@ function get_uri()
 
 function web_base_path($path)
 {
-    $documentRoot = $_SERVER['DOCUMENT_ROOT'];
-    $currentDir = getcwd();
-
-    $base_path = str_replace($documentRoot, '', $currentDir);
-    $full_path = $base_path . DIRECTORY_SEPARATOR . trim($path, ' /');
-
-    return get_url() . $full_path;
+    return get_url() . DIRECTORY_SEPARATOR . trim($path, ' /');
 }
 
 function get_db_query($file_name)
@@ -121,4 +115,38 @@ function prettify_XML($xml)
     $dom->loadXML($xml);
     $out = $dom->saveXML();
     return $out;
+}
+
+function prettify_JSON($jsonString)
+{
+    return json_encode(json_decode($jsonString), JSON_PRETTY_PRINT);
+}
+
+
+function prettify_array_headers($headers)
+{
+    $out = [];
+
+    foreach ($headers as $name => $values) {
+        $out[] = "{$name}: " . implode(',', $values);
+    }
+
+    return implode("\n", $out);
+}
+
+function isJsonSerializable($var)
+{
+    return is_array($var) ||
+        is_object($var) &&
+        get_class($var) === \stdClass::class;
+}
+
+function isSerializable($var)
+{
+    return is_object($var) && $var instanceof \Serializable;
+}
+
+function debug_dump(...$args)
+{
+    file_put_contents('debug', json_encode($args));
 }

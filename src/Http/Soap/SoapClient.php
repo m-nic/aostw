@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Http;
+namespace App\Http\Soap;
 
-class Client
+class SoapClient
 {
     private $client;
     private $afterCallFn;
