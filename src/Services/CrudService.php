@@ -117,7 +117,7 @@ class CrudService
                 'first_name' => $i . '-First',
                 'last_name'  => $i . '-Last',
                 'email'      => $i . '_test@example.com',
-                'phone'      => '+40721 000 ' . str_pad($i, 3),
+                'phone'      => '+40721 000 ' . str_pad($i, 3, '0', STR_PAD_LEFT),
             ]);
         }
 
