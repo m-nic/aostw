@@ -12,7 +12,6 @@
         pre {
             max-height: 180px;
         }
-
     </style>
 </head>
 <body>
@@ -33,25 +32,27 @@
                                 </button>
                             </div>
 
-                            <div class="table-responsive">
+                            <div class="table-responsive" v-if="table.length">
                                 <table class="table table-hover table-condensed table-striped">
                                     <thead>
-                                    <th></th>
-                                    <th>Nume</th>
-                                    <th>Prenume</th>
-                                    <th>Email</th>
-                                    <th>Telefon</th>
-                                    <th style="width: 150px"></th>
+                                        <tr>
+                                            <th></th>
+                                            <th>Nume</th>
+                                            <th>Prenume</th>
+                                            <th>Email</th>
+                                            <th>Telefon</th>
+                                            <th style="width: 150px"></th>
+                                        </tr>
                                     </thead>
-                                    <tbody>
-                                    <tr v-for="row of table">
+                                    <tbody v-if="table.length">
+                                        <tr v-for="row of table">
                                         <td v-for="(col, field) of row">
-                                    <span v-if="editRow === row.id && field !== 'id'">
-                                        <input type="text" :value="col" :name="field" class="form-control">
-                                    </span>
+                                            <span v-if="editRow === row.id && field !== 'id'">
+                                                <input type="text" :value="col" :name="field" class="form-control">
+                                            </span>
                                             <span v-else>
-                                       <span v-if="field === 'id'">#</span> {{ col }}
-                                    </span>
+                                                <span v-if="field === 'id'">#</span> {{ col }}
+                                            </span>
                                         </td>
                                         <td class="text-right">
                                             <div v-if="editRow === row.id">
@@ -80,6 +81,9 @@
                                     </tr>
                                     </tbody>
                                 </table>
+                            </div>
+                            <div v-else class="alert alert-warning text-center">
+                                Nu exista date! Puteti adauga sau apasa pe "Reset"
                             </div>
                         </form>
 

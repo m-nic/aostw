@@ -12,6 +12,9 @@ class CrudService
     public function __construct(SqlLite $db = null)
     {
         $this->db = $db;
+
+        // ensure table exists on service creation because heroku restarts app
+        $this->db->execute(get_db_query('create-users-table'));
     }
 
     /**
