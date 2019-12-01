@@ -15,6 +15,11 @@ function dd(...$args)
 function app_config()
 {
     $path = getcwd() . '/config.json';
+
+    if (!file_exists($path)) {
+        $path = getcwd() . '/config.json.example';
+    }
+
     $app_config = json_decode(file_get_contents($path), true);
     return $app_config;
 }
