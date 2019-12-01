@@ -57,23 +57,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 $userData = json_decode($httpClient->get('/rest/users')->getBody(), true);
 
-$requestsStack = [];
-foreach ($requestHistory as $entry) {
-    $apiMethod = $entry['request']->getUri()->getPath();
-    $method = $entry['request']->getMethod();
-
-    $requestsStack[] = [
-        'method'   => "[{$method}] " . $apiMethod,
-        'request'  => [
-            'headers' => prettify_array_headers($entry['request']->getHeaders()),
-            'body'    => prettify_JSON($entry['request']->getBody()),
-        ],
-        'response' => [
-            'headers' => prettify_array_headers($entry['response']->getHeaders()),
-            'body'    => prettify_JSON($entry['response']->getBody()),
-        ],
-    ];
-}
+$requestsStack = formatGuzzleRequests($requestHistory);
 
 $title = 'REST Client Demo';
 

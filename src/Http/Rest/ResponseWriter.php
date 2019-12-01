@@ -49,9 +49,12 @@ class ResponseWriter
     private function outputHeaders()
     {
         $responseHeaders = $this->responseInstance->getHeaders();
-
         foreach ($responseHeaders as $name => $value) {
             header("{$name}: {$value}");
+        }
+
+        if (isJsonSerializable($this->responseInstance->getContent())) {
+            header('Content-Type: application/json');
         }
     }
 
@@ -66,11 +69,8 @@ class ResponseWriter
         $content = $this->responseInstance->getContent();
 
         if (isJsonSerializable($content)) {
-            $this->responseInstance->addHeader('Content-Type: application/json');
             return json_encode($content);
-
         } elseif (isSerializable($content)) {
-            $this->responseInstance->addHeader('Content-Type: text/html');
             return $content->serialize();
         }
 

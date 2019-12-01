@@ -43,7 +43,7 @@ class SoapClient
                 'body'    => prettify_XML($this->client->getLastRequest()),
             ],
             'response' => [
-                'headers' => $this->client->getLastRequestHeaders(),
+                'headers' => $this->client->getLastResponseHeaders(),
                 'body'    => prettify_XML($this->client->getLastResponse()),
             ],
         ];

@@ -119,7 +119,13 @@ function prettify_XML($xml)
 
 function prettify_JSON($jsonString)
 {
-    return json_encode(json_decode($jsonString), JSON_PRETTY_PRINT);
+    $decoded = json_decode($jsonString);
+
+    if ($decoded) {
+        return json_encode($decoded, JSON_PRETTY_PRINT);
+    }
+
+    return '';
 }
 
 
@@ -128,7 +134,7 @@ function prettify_array_headers($headers)
     $out = [];
 
     foreach ($headers as $name => $values) {
-        $out[] = "{$name}: " . implode(',', $values);
+        $out[] = (!is_numeric($name) ? "{$name}: " : '') . implode(',', $values);
     }
 
     return implode("\n", $out);
@@ -149,4 +155,43 @@ function isSerializable($var)
 function debug_dump(...$args)
 {
     file_put_contents('debug', json_encode($args));
+}
+
+function formatGuzzleRequests($requestHistory)
+{
+    $requestsStack = [];
+    foreach ($requestHistory as $entry) {
+        /** @var \GuzzleHttp\Psr7\Request $request */
+        $request = $entry['request'];
+
+        /** @var \GuzzleHttp\Psr7\Response $response */
+        $response = $entry['response'];
+
+        $apiMethod = $request->getUri()->getPath();
+        $method = $request->getMethod();
+
+        $requestHeaders = $request->getHeaders();
+        $requestBody = $request->getBody();
+
+        $requestHeaders = array_merge([
+            ["{$method} {$apiMethod} HTTP " . $request->getProtocolVersion()]
+        ], $requestHeaders);
+
+        $responseHeaders = $response->getHeaders();
+        $responseBody = $response->getBody();
+
+        $requestsStack[] = [
+            'method'   => $apiMethod,
+            'request'  => [
+                'headers' => prettify_array_headers($requestHeaders),
+                'body'    => prettify_JSON($requestBody),
+            ],
+            'response' => [
+                'headers' => prettify_array_headers($responseHeaders),
+                'body'    => prettify_JSON($responseBody),
+            ],
+        ];
+    }
+
+    return $requestsStack;
 }
