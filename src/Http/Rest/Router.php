@@ -87,7 +87,7 @@ class Router
 
     private static function prepareDynamicRoute($route)
     {
-        return preg_replace('/\\\{.+?\\\}/i', '(.+?)', preg_quote($route));
+        return preg_replace('/\\\{.+?\\\}/i', '(.*)', preg_quote($route));
     }
 
     private static function cleanRoutePath($path)

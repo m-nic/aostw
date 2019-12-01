@@ -12,7 +12,7 @@ $history = Middleware::history($requestHistory);
 $handlerStack = HandlerStack::create();
 $handlerStack->push($history);
 
-$httpClient = new GuzzleHttp\Client([
+$restClient = new GuzzleHttp\Client([
     'base_uri' => get_url(),
     'timeout'  => 2.0,
     'handler'  => $handlerStack,
@@ -21,15 +21,15 @@ $httpClient = new GuzzleHttp\Client([
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['reset'])) {
-        $httpClient->post('/rest/users/reset');
+        $restClient->post('/rest/users/reset');
     }
 
     if (isset($_POST['delete_id'])) {
-        $del = $httpClient->delete('/rest/users/' . $_POST['delete_id']);
+        $del = $restClient->delete('/rest/users/' . $_POST['delete_id']);
     }
 
     if (isset($_POST['edit_id'])) {
-        $httpClient->put('/rest/users/' . $_POST['edit_id'], [
+        $restClient->put('/rest/users/' . $_POST['edit_id'], [
             'json' => [
                 'newData' => [
                     'first_name' => $_POST['first_name'],
@@ -42,7 +42,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     if (isset($_POST['add'])) {
-        $httpClient->post('/rest/users', [
+        $restClient->post('/rest/users', [
             'json' => [
                 'newData' => [
                     'first_name' => $_POST['first_name'],
@@ -55,7 +55,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-$userData = json_decode($httpClient->get('/rest/users')->getBody(), true);
+$userData = json_decode($restClient->get('/rest/users')->getBody(), true);
 
 $requestsStack = formatGuzzleRequests($requestHistory);
 

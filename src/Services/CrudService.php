@@ -109,12 +109,12 @@ class CrudService
         $this->db->execute('drop table if exists users');
         $this->db->execute(get_db_query('create-users-table'));
 
-        for ($i = 0; $i < 10; $i++) {
+        for ($i = 1; $i < 12; $i++) {
             $this->db->execute(get_db_query('insert_user'), [
-                'first_name' => $i . 'First',
-                'last_name'  => $i . 'Last',
+                'first_name' => $i . '-First',
+                'last_name'  => $i . '-Last',
                 'email'      => $i . '_test@example.com',
-                'phone'      => '+40721 000 0' . $i,
+                'phone'      => '+40721 000 ' . str_pad($i, 3),
             ]);
         }
 
