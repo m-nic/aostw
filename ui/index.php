@@ -184,7 +184,7 @@
                 cancelEdit: function () {
                     this.editRow = null;
                 },
-                confirm($event) {
+                confirm: function($event) {
                     if (!confirm('Confirmati actiunea?')) {
                         $event.preventDefault();
                     }
