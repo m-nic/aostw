@@ -5,7 +5,13 @@ require_once __DIR__ . '/vendor/autoload.php';
 use App\Http\Rest\Router;
 use App\Http\Rest\Request;
 
-$pdoInstance = new App\Database\SqlLite(app_config());
+$config = app_config();
+
+if (empty($config['database']['same_db'])) {
+    $config['database']['db_name'] .= '_rest';
+}
+
+$pdoInstance = new App\Database\SqlLite($config);
 
 Router::useContainer([
     App\Services\CrudService::class => [$pdoInstance],

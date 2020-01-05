@@ -1,6 +1,7 @@
 {
   "database": {
     "driver": "sqlite",
-    "db_name": "soa_demo"
+    "db_name": "soa_demo",
+    "same_db": true
   }
 }

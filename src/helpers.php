@@ -24,9 +24,17 @@ function app_config()
     return $app_config;
 }
 
-function get_url()
+function get_url($port = null)
 {
-    return trim(PROTOCOL . "://{$_SERVER['HTTP_HOST']}", ' /');
+    $hostname = $_SERVER['HTTP_X_FORWARDED_HOST'] ?? $_SERVER['HTTP_HOST'];
+    $port = $port ?? $_SERVER['HTTP_X_FORWARDED_PORT'] ?? $_SERVER['SERVER_PORT'];
+
+    $portPart = '';
+    if ($port != 80) {
+        $portPart = ":{$port}";
+    }
+
+    return trim(PROTOCOL . "://{$hostname}", ' /') . $portPart;
 }
 
 function get_uri()
@@ -37,9 +45,9 @@ function get_uri()
     return $actual_link;
 }
 
-function web_base_path($path)
+function web_base_path($path, $port = null)
 {
-    return get_url() . DIRECTORY_SEPARATOR . trim($path, ' /');
+    return get_url($port) . DIRECTORY_SEPARATOR . trim($path, ' /');
 }
 
 function get_db_query($file_name)
@@ -55,8 +63,7 @@ function get_db_query($file_name)
 
 function makeProxyClass($instance)
 {
-    return new class($instance)
-    {
+    return new class($instance) {
         public function __construct($client)
         {
             $this->client = $client;
@@ -199,4 +206,9 @@ function formatGuzzleRequests($requestHistory)
     }
 
     return $requestsStack;
+}
+
+function kebabCase($string)
+{
+    return strtolower(preg_replace('/([a-z]*+)[ -_]([a-z]*+)/i', '\1-\2', $string));
 }

@@ -11,40 +11,51 @@ $soapClient->afterCall(function ($httpRequestData) use (&$requestsStack) {
     $requestsStack[] = $httpRequestData;
 });
 
+// @TODO add propper error handling
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    if (isset($_POST['reset'])) {
-        $soapClient->resetDb();
-    }
+    try {
 
-    if (isset($_POST['delete_id'])) {
-        $soapClient->deleteUser(['id' => $_POST['delete_id']]);
-    }
+        if (isset($_POST['reset'])) {
+            $soapClient->resetDb();
+        }
 
-    if (isset($_POST['edit_id'])) {
-        $soapClient->editUser([
-            'id'      => $_POST['edit_id'],
-            'newData' => [
-                'first_name' => $_POST['first_name'],
-                'last_name'  => $_POST['last_name'],
-                'email'      => $_POST['email'],
-                'phone'      => $_POST['phone'],
-            ]
-        ]);
-    }
+        if (isset($_POST['delete_id'])) {
+            $soapClient->deleteUser(['id' => $_POST['delete_id']]);
+        }
 
-    if (isset($_POST['add'])) {
-        $soapClient->addUser([
-            'newData' => [
-                'first_name' => $_POST['first_name'],
-                'last_name'  => $_POST['last_name'],
-                'email'      => $_POST['email'],
-                'phone'      => $_POST['phone'],
-            ]
-        ]);
+        if (isset($_POST['edit_id'])) {
+            $soapClient->editUser([
+                'id'      => $_POST['edit_id'],
+                'newData' => [
+                    'first_name' => $_POST['first_name'],
+                    'last_name'  => $_POST['last_name'],
+                    'email'      => $_POST['email'],
+                    'phone'      => $_POST['phone'],
+                ]
+            ]);
+        }
+
+        if (isset($_POST['add'])) {
+            $soapClient->addUser([
+                'newData' => [
+                    'first_name' => $_POST['first_name'],
+                    'last_name'  => $_POST['last_name'],
+                    'email'      => $_POST['email'],
+                    'phone'      => $_POST['phone'],
+                ]
+            ]);
+        }
+    } catch (Throwable $e) {
+
     }
 }
 
-$userData = convertSoapArrayCollection($soapClient->browseUsers());
+try {
+    $userData = convertSoapArrayCollection($soapClient->browseUsers());
+} catch (Throwable $e) {
+    $userData = [];
+}
+
 $title = 'Soap Client Demo';
 
 include './ui/index.php';

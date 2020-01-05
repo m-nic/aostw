@@ -18,44 +18,52 @@ $restClient = new GuzzleHttp\Client([
     'handler'  => $handlerStack,
 ]);
 
-
+// @TODO add propper error handling
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    if (isset($_POST['reset'])) {
-        $restClient->post('/rest/users/reset');
-    }
+    try {
+        if (isset($_POST['reset'])) {
+            $restClient->post('/rest/users/reset');
+        }
 
-    if (isset($_POST['delete_id'])) {
-        $del = $restClient->delete('/rest/users/' . $_POST['delete_id']);
-    }
+        if (isset($_POST['delete_id'])) {
+            $del = $restClient->delete('/rest/users/' . $_POST['delete_id']);
+        }
 
-    if (isset($_POST['edit_id'])) {
-        $restClient->put('/rest/users/' . $_POST['edit_id'], [
-            'json' => [
-                'newData' => [
-                    'first_name' => $_POST['first_name'],
-                    'last_name'  => $_POST['last_name'],
-                    'email'      => $_POST['email'],
-                    'phone'      => $_POST['phone'],
+        if (isset($_POST['edit_id'])) {
+            $restClient->put('/rest/users/' . $_POST['edit_id'], [
+                'json' => [
+                    'newData' => [
+                        'first_name' => $_POST['first_name'],
+                        'last_name'  => $_POST['last_name'],
+                        'email'      => $_POST['email'],
+                        'phone'      => $_POST['phone'],
+                    ]
                 ]
-            ]
-        ]);
-    }
+            ]);
+        }
 
-    if (isset($_POST['add'])) {
-        $restClient->post('/rest/users', [
-            'json' => [
-                'newData' => [
-                    'first_name' => $_POST['first_name'],
-                    'last_name'  => $_POST['last_name'],
-                    'email'      => $_POST['email'],
-                    'phone'      => $_POST['phone'],
+        if (isset($_POST['add'])) {
+            $restClient->post('/rest/users', [
+                'json' => [
+                    'newData' => [
+                        'first_name' => $_POST['first_name'],
+                        'last_name'  => $_POST['last_name'],
+                        'email'      => $_POST['email'],
+                        'phone'      => $_POST['phone'],
+                    ]
                 ]
-            ]
-        ]);
+            ]);
+        }
+    } catch (Throwable $e) {
+
     }
 }
 
-$userData = json_decode($restClient->get('/rest/users')->getBody(), true);
+try {
+    $userData = json_decode($restClient->get('/rest/users')->getBody(), true);
+} catch (Throwable $e) {
+    $userData = [];
+}
 
 $requestsStack = formatGuzzleRequests($requestHistory);
 

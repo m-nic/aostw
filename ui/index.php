@@ -14,17 +14,21 @@
         }
     </style>
 </head>
-<body>
-
+<body class="<?php echo kebabCase($title); ?>">
 <div class="container-fluid">
     <div id="app">
         <div class="row">
-            <div class="col-xs-12 col-sm-8">
+            <div class="col-xs-12 col-sm-8 app-block">
                 <div class="panel panel-default">
                     <div class="panel-heading"></div>
                     <div class="panel-body">
-                        <form action="<?php echo $_SERVER['SCRIPT_NAME']; ?>" method="post">
+                        <form action="" method="post">
                             <div class="form-group text-right">
+                                <button class="btn btn-sm btn-success" type="button"
+                                        @click="reload()">
+                                    Refresh
+                                </button>
+
                                 <button class="btn btn-sm btn-danger" type="submit"
                                         @click="confirm($event, 'reset')"
                                         name="reset" value="1">
@@ -89,7 +93,7 @@
 
                         <div class="row">
                             <div class="col-xs-12 col-sm-4 col-sm-offset-4 well well-lg">
-                                <form action="<?php echo $_SERVER['SCRIPT_NAME']; ?>" method="post"
+                                <form action="" method="post"
                                       class="form-horizontal">
                                     <div class="form-group">
                                         <label for="first_name">Nume</label>
@@ -119,7 +123,7 @@
                 </div>
             </div>
             <div class="col-xs-12 col-sm-4 requests-block">
-                <div class="panel">
+                <div class="panel switcher">
                     <div class="panel-body text-right">
                         <a href="/client-soap.php"
                            class="btn <?php echo $_SERVER['SCRIPT_NAME'] === '/client-soap.php' ? 'btn-primary' : 'btn-default'; ?>">
@@ -188,6 +192,9 @@
                     if (!confirm('Confirmati actiunea?')) {
                         $event.preventDefault();
                     }
+                },
+                reload: function () {
+                    window.location.reload();
                 }
             }
         });
