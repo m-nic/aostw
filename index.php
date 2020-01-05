@@ -7,7 +7,7 @@
 
 echo "Test";
 
-if ($_GET['deploy_config']) {
+if (!empty($_GET['deploy_config'])) {
     file_put_contents(
         'config.json',
         <<<DELIM

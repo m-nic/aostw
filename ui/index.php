@@ -1,3 +1,4 @@
+<?php runJsPrg(); ?>
 <!doctype html>
 <html lang="en">
 <head>
@@ -24,11 +25,6 @@
                     <div class="panel-body">
                         <form action="" method="post">
                             <div class="form-group text-right">
-                                <button class="btn btn-sm btn-success" type="button"
-                                        @click="reload()">
-                                    Refresh
-                                </button>
-
                                 <button class="btn btn-sm btn-danger" type="submit"
                                         @click="confirm($event, 'reset')"
                                         name="reset" value="1">
@@ -39,17 +35,17 @@
                             <div class="table-responsive" v-if="table.length">
                                 <table class="table table-hover table-condensed table-striped">
                                     <thead>
-                                        <tr>
-                                            <th></th>
-                                            <th>Nume</th>
-                                            <th>Prenume</th>
-                                            <th>Email</th>
-                                            <th>Telefon</th>
-                                            <th style="width: 150px"></th>
-                                        </tr>
+                                    <tr>
+                                        <th></th>
+                                        <th>Nume</th>
+                                        <th>Prenume</th>
+                                        <th>Email</th>
+                                        <th>Telefon</th>
+                                        <th style="width: 150px"></th>
+                                    </tr>
                                     </thead>
                                     <tbody v-if="table.length">
-                                        <tr v-for="row of table">
+                                    <tr v-for="row of table">
                                         <td v-for="(col, field) of row">
                                             <span v-if="editRow === row.id && field !== 'id'">
                                                 <input type="text" :value="col" :name="field" class="form-control">
@@ -188,13 +184,10 @@
                 cancelEdit: function () {
                     this.editRow = null;
                 },
-                confirm: function($event) {
+                confirm: function ($event) {
                     if (!confirm('Confirmati actiunea?')) {
                         $event.preventDefault();
                     }
-                },
-                reload: function () {
-                    window.location.reload();
                 }
             }
         });
