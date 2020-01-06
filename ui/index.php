@@ -1,4 +1,4 @@
-<?php runJsPrg(); ?>
+<?php runJsPrg($viewData); ?>
 <!doctype html>
 <html lang="en">
 <head>
@@ -6,7 +6,7 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title><?php echo $title; ?></title>
+    <title><?php echo $viewData['title']; ?></title>
     <link href="<?php echo web_base_path('ui/assets/bootstrap.min.css'); ?>" rel="stylesheet">
     <script src="<?php echo web_base_path('ui/assets/vue.js'); ?>"></script>
     <style>
@@ -15,7 +15,7 @@
         }
     </style>
 </head>
-<body class="<?php echo kebabCase($title); ?>">
+<body class="<?php echo kebabCase($viewData['title']); ?>">
 <div class="container-fluid">
     <div id="app">
         <div class="row">
@@ -165,8 +165,8 @@
 
 <script>
     (function () {
-        var userData = <?php print_json($userData); ?>;
-        var requestsStack = <?php print_json($requestsStack); ?>;
+        var userData = <?php print_json($viewData['userData']); ?>;
+        var requestsStack = <?php print_json($viewData['requestsStack']); ?>;
 
         new Vue({
             el: '#app',

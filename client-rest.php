@@ -4,7 +4,7 @@ use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Middleware;
 
 require_once __DIR__ . '/vendor/autoload.php';
-
+\App\Http\Session::enable();
 
 $requestHistory = [];
 
@@ -61,12 +61,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 try {
     $userData = json_decode($restClient->get('/rest/users')->getBody(), true);
+    $requestsStack = formatGuzzleRequests($requestHistory);
 } catch (Throwable $e) {
     $userData = [];
+    $requestsStack = [];
 }
 
-$requestsStack = formatGuzzleRequests($requestHistory);
-
 $title = 'REST Client Demo';
+
+$viewData = [
+    'title'         => $title,
+    'userData'      => $userData,
+    'requestsStack' => $requestsStack,
+];
 
 include './ui/index.php';

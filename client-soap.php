@@ -1,6 +1,7 @@
 <?php
 
 require_once __DIR__ . '/vendor/autoload.php';
+\App\Http\Session::enable();
 
 $wsdl = web_base_path('server-soap.php') . '?wsdl';
 $soapClient = new \App\Http\Soap\SoapClient($wsdl);
@@ -57,5 +58,11 @@ try {
 }
 
 $title = 'Soap Client Demo';
+
+$viewData = [
+    'title'         => $title,
+    'userData'      => $userData,
+    'requestsStack' => $requestsStack,
+];
 
 include './ui/index.php';

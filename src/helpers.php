@@ -213,11 +213,17 @@ function kebabCase($string)
     return strtolower(preg_replace('/([a-z]*+)[ -_]([a-z]*+)/i', '\1-\2', $string));
 }
 
-function runJsPrg()
+function runJsPrg(&$viewData)
 {
     // @TODO Apply real PRG pattern and fix redirect issue from EIP http component
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        \App\Http\Session::put('viewData', $viewData);
+
         echo "<script>window.location.replace(window.location.href)</script>";
         exit;
+    }
+
+    if (\App\Http\Session::has('viewData')) {
+        $viewData = \App\Http\Session::pull('viewData');
     }
 }
