@@ -18,7 +18,7 @@ class Session
 
     public static function put($key, $value)
     {
-        if (!$_SESSION['app-data']) {
+        if (empty($_SESSION['app-data'])) {
             $_SESSION['app-data'] = [];
         }
 
